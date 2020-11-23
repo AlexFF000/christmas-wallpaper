@@ -17,11 +17,13 @@ namespace ChristmasWallpaper
         // Use SystemParametersInfo function from user32.dll (Win32 API's UI library) as C# method
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         static extern int SystemParametersInfo(uint uiAction, uint uiParam, string pvParam, uint fWinIni);
-        public static void setWallpaper()  // Change desktop wallpaper
+        public static void setWallpaper(String newWallpaperPath)  // Change desktop wallpaper
         {
-            String newWallpaperPath = "";
-            
 
+            // Change the wallpaper key in the registry, otherwise the wallpaper change will be lost when the user signs in again
+            Registry.SetValue(wallpaperKeyPath, "WallPaper", newWallpaperPath);
+
+            // Update the wallpaper for the current session (otherwise the changes won't take effect until the user next signs in)
             SystemParametersInfo(
                 SPI_SETDESKWALLPAPER,  // Specifies that the wallpaper should be changed
                 0,  // 0 as irrelevant to changing wallpaper
