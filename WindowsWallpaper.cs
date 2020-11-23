@@ -31,5 +31,12 @@ namespace ChristmasWallpaper
                 SPIF_SENDCHANGE  // Specifies that change should be broadcast to all top level windows (so explorer knows to update the image)
                 );  
         }
+
+        public static ImageObject getWallpaper()
+        {
+            String wallpaperImagePath = Registry.GetValue(wallpaperKeyPath, "WallPaper", null).ToString();
+            return new ImageObject(wallpaperImagePath);
+
+        }
     }
 }
