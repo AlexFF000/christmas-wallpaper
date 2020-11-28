@@ -22,7 +22,7 @@ namespace ChristmasWallpaper
             return image;
         }
 
-        public void OverlayImage(ImageObject overlay)  // Overlay the given image on top of this one
+        public void OverlaySmallerImage(ImageObject overlay)  // Overlay a smaller image on top of this one (or if not smaller then resize)
         {
             Image overlayImageData = overlay.GetImage();
 
@@ -34,6 +34,15 @@ namespace ChristmasWallpaper
             {
                 // Must use rectange overload instead of point or overlay image may be resized
                 g.DrawImage(overlayImageData, new Rectangle(xValue, yValue, overlayImageData.Width, overlayImageData.Height));
+            }
+        }
+
+        public void OverlayEqualImage(ImageObject overlay)  // Overlay an image of the same size as this one on top of this one
+        {
+            Image overlayImageData = overlay.GetImage();
+            using (Graphics g = Graphics.FromImage(image))
+            {
+                g.DrawImage(overlayImageData, new Rectangle(0, 0, overlayImageData.Width, overlayImageData.Height));
             }
         }
 
