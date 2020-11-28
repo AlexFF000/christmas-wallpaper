@@ -32,7 +32,8 @@ namespace ChristmasWallpaper
             
             using (Graphics g = Graphics.FromImage(image))
             {
-                g.DrawImage(overlayImageData, new Point(xValue, yValue));
+                // Must use rectange overload instead of point or overlay image may be resized
+                g.DrawImage(overlayImageData, new Rectangle(xValue, yValue, overlayImageData.Width, overlayImageData.Height));
             }
         }
 
