@@ -26,14 +26,24 @@ namespace ChristmasWallpaper
         {
             Image overlayImageData = overlay.GetImage();
 
+            // Make sure overlay image is smaller than base image- resize if necessary
+            int overlayWidth = overlayImageData.Width;
+            int overlayHeight = overlayImageData.Height;
+            
+            // If overlay is bigger in either dimension then shrink by 10% until it is smaller
+            while (image.Width < overlayWidth || image.Height < overlayHeight)
+            {
+                overlayWidth = (int)(overlayWidth * 0.9);
+                overlayHeight = (int)(overlayHeight * 0.9);
+            }
             // Calculate coordinates such that overlay image is vertically at bottom of base image and horizontally centred
-            int xValue = (image.Width / 2) - (overlayImageData.Width / 2);
-            int yValue = image.Height - overlayImageData.Height;
+            int xValue = (image.Width / 2) - (overlayWidth / 2);
+            int yValue = image.Height - overlayHeight;
             
             using (Graphics g = Graphics.FromImage(image))
             {
                 // Must use rectange overload instead of point or overlay image may be resized
-                g.DrawImage(overlayImageData, new Rectangle(xValue, yValue, overlayImageData.Width, overlayImageData.Height));
+                g.DrawImage(overlayImageData, new Rectangle(xValue, yValue, overlayWidth, overlayHeight));
             }
         }
 
