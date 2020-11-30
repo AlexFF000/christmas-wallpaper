@@ -23,6 +23,9 @@ namespace ChristmasWallpaper
             // Change the wallpaper key in the registry, otherwise the wallpaper change will be lost when the user signs in again
             Registry.SetValue(wallpaperKeyPath, "WallPaper", newWallpaperPath);
 
+            // Change wallpaper fit mode to "stretch" so that everything fits in frame
+            Registry.SetValue(wallpaperKeyPath, "WallpaperStyle", "2");
+
             // Update the wallpaper for the current session (otherwise the changes won't take effect until the user next signs in)
             SystemParametersInfo(
                 SPI_SETDESKWALLPAPER,  // Specifies that the wallpaper should be changed
