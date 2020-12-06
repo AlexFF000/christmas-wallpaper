@@ -43,9 +43,17 @@ namespace ChristmasWallpaper
 
         }
 
+        public static bool TaskbarIsHidden()
+        {
+            // The eighth byte of the taskbar settings registry value represents whether the taskbar is hidden
+            byte[] taskbarSettings = (byte[])Registry.GetValue(taskbarKeyPath, "Settings", null);
+            if (taskbarSettings[8] == 3) return true;
+            return false;
+        }
         public static string GetTaskbarPosition()
         {
-            byte[] taskbarSettings =(byte[])Registry.GetValue(taskbarKeyPath, "Settings", null);
+            // The twelfth byte of the taskbar settings registry value represents the taskbar's position on the screen
+            byte[] taskbarSettings =(byte[]) Registry.GetValue(taskbarKeyPath, "Settings", null);
             switch (taskbarSettings[12])
             {
                 case 0:
