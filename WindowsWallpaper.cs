@@ -11,6 +11,7 @@ namespace ChristmasWallpaper
     static class WindowsWallpaper
     {
         const String wallpaperKeyPath = @"HKEY_CURRENT_USER\Control Panel\Desktop";
+        const String taskbarKeyPath = @"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3";
         const uint SPI_SETDESKWALLPAPER = 20;
         const uint SPIF_SENDCHANGE = 2;
         
@@ -40,6 +41,22 @@ namespace ChristmasWallpaper
             String wallpaperImagePath = Registry.GetValue(wallpaperKeyPath, "WallPaper", null).ToString();
             return new ImageObject(wallpaperImagePath);
 
+        }
+
+        public static string GetTaskbarPosition()
+        {
+            byte[] taskbarSettings =(byte[])Registry.GetValue(taskbarKeyPath, "Settings", null);
+            switch (taskbarSettings[12])
+            {
+                case 0:
+                    return "Left";
+                case 1:
+                    return "Top";
+                case 2:
+                    return "Right";
+                default:
+                    return "Bottom";
+            }
         }
     }
 }
