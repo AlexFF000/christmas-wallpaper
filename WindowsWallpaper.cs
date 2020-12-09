@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using System.Drawing;
+
 
 namespace ChristmasWallpaper
 {
@@ -18,6 +21,7 @@ namespace ChristmasWallpaper
         // Use SystemParametersInfo function from user32.dll (Win32 API's UI library) as C# method
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         static extern int SystemParametersInfo(uint uiAction, uint uiParam, string pvParam, uint fWinIni);
+       
         public static void SetWallpaper(String newWallpaperPath)  // Change desktop wallpaper
         {
 
@@ -45,15 +49,16 @@ namespace ChristmasWallpaper
 
         public static bool TaskbarIsHidden()
         {
-            // The eighth byte of the taskbar settings registry value represents whether the taskbar is hidden
+            // Byte 8 (starting from 0) of the taskbar settings registry value represents whether the taskbar is hidden
             byte[] taskbarSettings = (byte[])Registry.GetValue(taskbarKeyPath, "Settings", null);
             if (taskbarSettings[8] == 3) return true;
             return false;
         }
+
         public static string GetTaskbarPosition()
         {
-            // The twelfth byte of the taskbar settings registry value represents the taskbar's position on the screen
-            byte[] taskbarSettings =(byte[]) Registry.GetValue(taskbarKeyPath, "Settings", null);
+            // Byte 12 (starting from 0) of the taskbar settings registry value represents the taskbar's position on the screen
+            byte[] taskbarSettings = (byte[]) Registry.GetValue(taskbarKeyPath, "Settings", null);
             switch (taskbarSettings[12])
             {
                 case 0:
@@ -64,6 +69,25 @@ namespace ChristmasWallpaper
                     return "Right";
                 default:
                     return "Bottom";
+            }
+        }
+
+        public static int GetTaskbarHeight()
+        {
+            // Get size of working area (screen size excluding taskbar)
+            Rectangle workingArea = Screen.GetWorkingArea(new Point(0, 0));
+            // Get size of whole screen
+            Rectangle screenArea = Screen.GetBounds(new Point(0, 0));
+
+            // Calculate taskbar height
+            string taskbarPosition = GetTaskbarPosition();
+            if (taskbarPosition == "Top" || taskbarPosition == "Bottom")
+            {
+                return screenArea.Height - workingArea.Height;
+            }
+            else
+            {
+                return screenArea.Width - workingArea.Width;
             }
         }
     }
