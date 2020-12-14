@@ -16,6 +16,7 @@ namespace ChristmasWallpaper
         private const string StateFilePath = @"..\..\state.json";
         public static DateTime StartDate;  // The date to start modifying the background
         public static DateTime EndDate;  // The day of the last modification, after which the modifications will be removed
+        public static string BaseImage;  // The name of the base image, on which everything else will be added
         public static int DaysElapsed;  // The number of days between start and end date that a modification has been added
         public static Dictionary<string, string> Images;  // Names of images
         public static List<string> ImagesUsed;  // List of images that have already been used
@@ -27,9 +28,12 @@ namespace ChristmasWallpaper
             {
                 byte[] fileContent = new byte[configFile.Length];
                 configFile.Read(fileContent, 0, fileContent.Length);
-                Dictionary<string, DateTime> configData = JsonSerializer.Deserialize<Dictionary<string, DateTime>>(fileContent);
-                configData.TryGetValue("StartDate", out StartDate);
-                configData.TryGetValue("EndDate", out EndDate);
+                ConfigFields configData = JsonSerializer.Deserialize<ConfigFields>(fileContent);
+                StartDate = DateTime.Parse(configData.StartDate);
+                EndDate = DateTime.Parse(configData.EndDate);
+                Images = configData.Images;
+                BaseImage = configData.BaseImage;
+
             }
             
         }
@@ -37,10 +41,12 @@ namespace ChristmasWallpaper
         public static void SaveConfig()
         {
             // Save settings to config file
-            Dictionary<string, string> configData = new Dictionary<string, string>();
-            configData.Add("StartDate", StartDate.ToString("yyyy-MM-dd"));
-            configData.Add("EndDate", StartDate.ToString("yyyy-MM-dd"));
-            string configJson = JsonSerializer.Serialize<Dictionary<string, string>>(configData);
+            ConfigFields configData = new ConfigFields();
+            configData.StartDate = StartDate.ToString("yyyy-MM-dd");
+            configData.EndDate = EndDate.ToString("yyyy-MM-dd");
+            configData.Images = Images;
+            configData.BaseImage = BaseImage;
+            string configJson = JsonSerializer.Serialize<ConfigFields>(configData);
             File.WriteAllText(ConfigFilePath, configJson);
 
         }
@@ -54,7 +60,6 @@ namespace ChristmasWallpaper
                 stateFile.Read(fileContent, 0, fileContent.Length);
                 StateFields stateData = JsonSerializer.Deserialize<StateFields>(fileContent);
                 DaysElapsed = stateData.DaysElapsed;
-                Images = stateData.Images;
                 ImagesUsed = stateData.ImagesUsed;
             }
 
@@ -65,17 +70,22 @@ namespace ChristmasWallpaper
             // Save state to state file
             StateFields stateData = new StateFields();
             stateData.DaysElapsed = DaysElapsed;
-            stateData.Images = Images;
             stateData.ImagesUsed = ImagesUsed;
             string stateJson = JsonSerializer.Serialize<StateFields>(stateData);
             File.WriteAllText(StateFilePath, stateJson);
         }
     }
 
+    public class ConfigFields
+    {
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public Dictionary<string, string> Images { get; set; }
+        public string BaseImage { get; set; }
+    }
     public class StateFields
     {
         public int DaysElapsed { get; set; }
-        public Dictionary<string, string> Images { get; set; }
         public List<string> ImagesUsed { get; set; }
     }
 }
