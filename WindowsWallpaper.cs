@@ -44,7 +44,11 @@ namespace ChristmasWallpaper
         {
             String wallpaperImagePath = Registry.GetValue(wallpaperKeyPath, "WallPaper", null).ToString();
             return new ImageObject(wallpaperImagePath);
+        }
 
+        public static string GetWallpaperPath()
+        {
+            return Registry.GetValue(wallpaperKeyPath, "WallPaper", null).ToString();
         }
 
         public static bool TaskbarIsHidden()

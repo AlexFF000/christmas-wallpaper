@@ -20,6 +20,7 @@ namespace ChristmasWallpaper
         public static int DaysElapsed;  // The number of days between start and end date that a modification has been added
         public static Dictionary<string, string> Images;  // Names of images
         public static List<string> ImagesUsed;  // List of images that have already been used
+        public static string OriginalWallpaperPath;
 
         public static void LoadConfig()
         {
@@ -33,7 +34,10 @@ namespace ChristmasWallpaper
                 EndDate = DateTime.Parse(configData.EndDate);
                 Images = configData.Images;
                 BaseImage = configData.BaseImage;
-
+                // Program does not take year into account, so change year to current year
+                int currentYear = DateTime.Now.Year;
+                StartDate = new DateTime(currentYear, StartDate.Month, StartDate.Day);
+                EndDate = new DateTime(currentYear, EndDate.Month, EndDate.Day);
             }
             
         }
@@ -61,6 +65,7 @@ namespace ChristmasWallpaper
                 StateFields stateData = JsonSerializer.Deserialize<StateFields>(fileContent);
                 DaysElapsed = stateData.DaysElapsed;
                 ImagesUsed = stateData.ImagesUsed;
+                OriginalWallpaperPath = stateData.OriginalWallpaperPath;
             }
 
         }
@@ -71,6 +76,7 @@ namespace ChristmasWallpaper
             StateFields stateData = new StateFields();
             stateData.DaysElapsed = DaysElapsed;
             stateData.ImagesUsed = ImagesUsed;
+            stateData.OriginalWallpaperPath = OriginalWallpaperPath;
             string stateJson = JsonSerializer.Serialize<StateFields>(stateData);
             File.WriteAllText(StateFilePath, stateJson);
         }
@@ -87,5 +93,6 @@ namespace ChristmasWallpaper
     {
         public int DaysElapsed { get; set; }
         public List<string> ImagesUsed { get; set; }
+        public string OriginalWallpaperPath;
     }
 }
