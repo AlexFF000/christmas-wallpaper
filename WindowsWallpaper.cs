@@ -34,7 +34,7 @@ namespace ChristmasWallpaper
             // Update the wallpaper for the current session (otherwise the changes won't take effect until the user next signs in)
             SystemParametersInfo(
                 SPI_SETDESKWALLPAPER,  // Specifies that the wallpaper should be changed
-                0,  // 0 as irrelevant to changing wallpaper
+                0,  // 0, as irrelevant to changing wallpaper
                 newWallpaperPath,  // Path of new wallpaper image
                 SPIF_SENDCHANGE  // Specifies that change should be broadcast to all top level windows (so explorer knows to update the image)
                 );  

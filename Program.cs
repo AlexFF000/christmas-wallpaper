@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.Win32;
 
 namespace ChristmasWallpaper
 {
@@ -11,6 +12,7 @@ namespace ChristmasWallpaper
     {
         const string OverlayPath = @"..\..\Images\State\overlay.png";  // Location of image to overlay on desktop
         const string ModifiedWallpaperPath = @"..\..\Images\State\wallpaper.png";  // Base path used to generate paths to store modified wallpaper image
+        const string StartupKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -21,18 +23,23 @@ namespace ChristmasWallpaper
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
 
+            RunOnStartup();
             // Images\\State path may not exists on first run, so if necessary create it
             if (!Directory.Exists(Path.GetDirectoryName(ModifiedWallpaperPath))) 
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(ModifiedWallpaperPath));
             }
 
+            // Load configuration and data from config.json and state.json
             LoadState();
+            // Add to the desktop how ever many times is necessary
             int updatesNeeded = UpdatesNeeded();
             for (int i = 0; i < updatesNeeded; i++)
             {
                 UpdateWallpaper();
             }
+
+            // Save configuration and data
             SaveState();
 
 
@@ -138,6 +145,39 @@ namespace ChristmasWallpaper
                 image = images[index];
             }
             return image;
+        }
+
+        static void RunOnStartup()
+        {
+            // Add executable to start up if not already there and if user gives permission
+            
+            RegistryKey runKey = Registry.CurrentUser.OpenSubKey(StartupKey);
+            if (!runKey.GetValueNames().Contains("ChristmasWallpaper"))
+            {
+                // Ask the user for permission to create shortcut
+                if (MessageBox.Show("Grant permission to run on startup? (If you click no, you will need to start the application manually every day)",
+                    "Startup Permission",
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    // Add to registry
+                    string keyPath = Path.Combine("HKEY_CURRENT_USER", StartupKey);
+                    Registry.SetValue(keyPath, "ChristmasWallpaper", Application.ExecutablePath);
+                    
+                }
+            }
+        }
+
+        static void RemoveFromStartup()
+        {
+            try
+            {
+                RegistryKey runKey = Registry.CurrentUser.OpenSubKey(StartupKey, true);
+                runKey.DeleteValue("ChristmasWallpaper");
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("ChristmasWallpaper is not set to run on startup", "Cannot remove from startup", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
