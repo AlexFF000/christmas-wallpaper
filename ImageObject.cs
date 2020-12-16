@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace ChristmasWallpaper
 {
@@ -14,7 +15,10 @@ namespace ChristmasWallpaper
 
         public ImageObject(String imageFilePath)
         {
-            image = Image.FromFile(imageFilePath);
+            // Load file from filestream rather than path to allow stream to be closed so file can be overwritten
+            FileStream stream = new FileStream(imageFilePath, FileMode.Open);
+            image = Image.FromStream(stream);
+            stream.Close();
         }
 
         public Image GetImage()

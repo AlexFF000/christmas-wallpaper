@@ -10,8 +10,7 @@ namespace ChristmasWallpaper
     static class Program
     {
         const string OverlayPath = @"..\..\Images\State\overlay.png";  // Location of image to overlay on desktop
-        const string ModifiedWallpaperPathStructure = @"..\..\Images\State\wallpaper.png";  // Base path used to generate paths to store modified wallpaper image
-        static string ModifiedWallpaperPath = GenerateWallpaperStoragePath();  // Path to store wallpaper image
+        const string ModifiedWallpaperPath = @"..\..\Images\State\wallpaper.png";  // Base path used to generate paths to store modified wallpaper image
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -23,9 +22,9 @@ namespace ChristmasWallpaper
             Application.Run(new Form1());
 
             // Images\\State path may not exists on first run, so if necessary create it
-            if (!Directory.Exists(Path.GetDirectoryName(ModifiedWallpaperPathStructure))) 
+            if (!Directory.Exists(Path.GetDirectoryName(ModifiedWallpaperPath))) 
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(ModifiedWallpaperPathStructure));
+                Directory.CreateDirectory(Path.GetDirectoryName(ModifiedWallpaperPath));
             }
 
             LoadState();
@@ -139,22 +138,6 @@ namespace ChristmasWallpaper
                 image = images[index];
             }
             return image;
-        }
-
-        static string GenerateWallpaperStoragePath()
-        {
-            // Cannot use the same wallpaper path multiple times, as the desktop image is protected from modification, so must use a slighly different path name each day
-            string path = ModifiedWallpaperPathStructure;
-            int number = 0;  // Simply append an integer to the end of the file name to make it unique
-            while (File.Exists(path))
-            {
-                number++;
-                string directory = Path.GetDirectoryName(path);
-                string fileName = Path.GetFileNameWithoutExtension(path);
-                string extension = Path.GetExtension(path);
-                path = String.Format(@"{0}\{1}{2}{3}", directory, fileName, number, extension);
-            }
-            return path;
         }
     }
 }

@@ -34,10 +34,11 @@ namespace ChristmasWallpaper
                 EndDate = DateTime.Parse(configData.EndDate);
                 Images = configData.Images;
                 BaseImage = configData.BaseImage;
+
                 // Program does not take year into account, so change year to current year
                 int currentYear = DateTime.Now.Year;
                 StartDate = new DateTime(currentYear, StartDate.Month, StartDate.Day);
-                EndDate = new DateTime(currentYear, EndDate.Month, EndDate.Day);
+                EndDate = new DateTime(currentYear, EndDate.Month, EndDate.Day).AddHours(23).AddMinutes(59).AddSeconds(59);  // Time for end date should be 23:59:59
             }
             
         }
