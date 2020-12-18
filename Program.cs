@@ -19,12 +19,13 @@ namespace ChristmasWallpaper
         [STAThread]
         static void Main()
         {
-            
+
+            // Make sure all needed files are useable
+            StartupChecks();
+            // If necessary, ask user permission to set program to run on startup
             RunOnStartup();
-            // Load configuration and data from config.json and state.json
-            LoadState();
-            // Images\\State path may not exists on first run, so if necessary create it
-            if (!Directory.Exists(Path.GetDirectoryName(ModifiedWallpaperPath))) 
+            // Images\\State path may not exist on first run, so if necessary create it
+            if (!Directory.Exists(Path.GetDirectoryName(ModifiedWallpaperPath)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(ModifiedWallpaperPath));
             }
@@ -46,13 +47,6 @@ namespace ChristmasWallpaper
 
         }
 
-        static void LoadState()
-        {
-            // Load data from config.json and state.json
-            State.LoadConfig();
-            State.LoadState();
-        }
-
         static void SaveState()
         {
             // Save changes to config.json and state.json
@@ -71,7 +65,7 @@ namespace ChristmasWallpaper
                     RevertWallpaper();
                 }
                 return 0;
-            } 
+            }
             // Get number of updates that should have been performed by now
             int expectedUpdates = (DateTime.Now - State.StartDate.AddDays(-1)).Days;
             return expectedUpdates - State.DaysElapsed;
@@ -151,7 +145,7 @@ namespace ChristmasWallpaper
         static void RunOnStartup()
         {
             // Add executable to start up if not already there and if user gives permission
-            
+
             RegistryKey runKey = Registry.CurrentUser.OpenSubKey(StartupKey);
             if (!runKey.GetValueNames().Contains("ChristmasWallpaper"))
             {
@@ -163,7 +157,7 @@ namespace ChristmasWallpaper
                     // Add to registry
                     string keyPath = Path.Combine("HKEY_CURRENT_USER", StartupKey);
                     Registry.SetValue(keyPath, "ChristmasWallpaper", Application.ExecutablePath);
-                    
+
                 }
             }
         }
@@ -179,6 +173,41 @@ namespace ChristmasWallpaper
             catch (ArgumentException)
             {
                 MessageBox.Show("ChristmasWallpaper is not set to run on startup", "Cannot remove from startup", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        public static void StartupChecks()
+        {
+            // Check that the necessary files exist before starting
+
+            // Check that config.json and state.json are intact
+            try
+            {
+                State.LoadConfig();
+                State.LoadState();
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("Unable to start program as one or more of the config files (config.json, state.json) cannot be found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Exit program with error code 2 (file not found)
+                Environment.Exit(2);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Unable to start program as one or more of the config files (config.json, state.json) cannot be processed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Exit program with error code 13 (invalid data)
+                Environment.Exit(13);
+            }
+            // Check that all the image files exist
+            foreach (string filePath in State.Images.Values)
+            {
+                if (!File.Exists(filePath))
+                {
+                    MessageBox.Show("Unable to start program as one or more of the image files cannot be found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Exit program with error code 2 (file not found)
+                    Environment.Exit(2);
+                }
             }
         }
     }
