@@ -20,7 +20,7 @@ namespace ChristmasWallpaper
         public static int DaysElapsed;  // The number of days between start and end date that a modification has been added
         public static Dictionary<string, string> Images;  // Names of images
         public static List<string> ImagesUsed;  // List of images that have already been used
-        public static string OriginalWallpaperPath;
+        public static string OriginalWallpaperPath;  // The path of the original wallpaper, to revert back to after the last day
 
         public static void LoadConfig()
         {

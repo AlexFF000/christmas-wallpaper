@@ -19,19 +19,15 @@ namespace ChristmasWallpaper
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-
+            
             RunOnStartup();
+            // Load configuration and data from config.json and state.json
+            LoadState();
             // Images\\State path may not exists on first run, so if necessary create it
             if (!Directory.Exists(Path.GetDirectoryName(ModifiedWallpaperPath))) 
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(ModifiedWallpaperPath));
             }
-
-            // Load configuration and data from config.json and state.json
-            LoadState();
             // Add to the desktop how ever many times is necessary
             int updatesNeeded = UpdatesNeeded();
             for (int i = 0; i < updatesNeeded; i++)
@@ -41,6 +37,11 @@ namespace ChristmasWallpaper
 
             // Save configuration and data
             SaveState();
+
+            // Start settings UI
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
 
 
         }
@@ -167,12 +168,13 @@ namespace ChristmasWallpaper
             }
         }
 
-        static void RemoveFromStartup()
+        public static void RemoveFromStartup()
         {
             try
             {
                 RegistryKey runKey = Registry.CurrentUser.OpenSubKey(StartupKey, true);
                 runKey.DeleteValue("ChristmasWallpaper");
+                MessageBox.Show("Removed ChristmasWallpaper from startup");
             }
             catch (ArgumentException)
             {
