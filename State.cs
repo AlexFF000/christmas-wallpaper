@@ -94,6 +94,6 @@ namespace ChristmasWallpaper
     {
         public int DaysElapsed { get; set; }
         public List<string> ImagesUsed { get; set; }
-        public string OriginalWallpaperPath;
+        public string OriginalWallpaperPath { get; set; }
     }
 }
