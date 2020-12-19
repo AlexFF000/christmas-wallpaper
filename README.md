@@ -30,9 +30,9 @@ The program is designed to accommodate users wishing to modify it (for instance,
 #### Changing or adding new images
 The images are stored by default in the "Images/Resources" folder, although can be stored anywhere on the local file system that the program can access.  **The "Images/State" folder (which is only created on first run) is for the program's internal use, and its contents should not be modified.**
 
-To add new images (or replace existing ones), simply add them to the "Images" dictionary in config.json.  Items in the dictionary should be in the following format: "<image name>":"<image path>".
+To add new images (or replace existing ones), simply add them to the "Images" dictionary in config.json.  Items in the dictionary should be in the following format: "\<image name\>":"\<image path\>".
 The config.json file must also specify the base image, which is the image added on the first day that the others are placed on top of (by default, this is the tree).  This should be specified as follows:
-"BaseImage":"<name of image (must be the same name as used in Images dictionary)>".
+"BaseImage":"\<name of image (must be the same name as used in Images dictionary)\>".
 
 #### Changing the start and end date
 The start and end date can be changed either through the settings GUI form, or by manually changing the values in config.json. **Please note that the year is ignored, so the program does not support start and end dates that fall on different years.**
