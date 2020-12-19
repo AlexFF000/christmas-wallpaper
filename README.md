@@ -39,7 +39,7 @@ The start and end date can be changed either through the settings GUI form, or b
 
 If there are more days between the start and end date than there are images, then no more modifications will be made once all images have been used.  Likewise, if there are more images than days, then not all images will be used.
 
-**Note that the state.json file is for the program's internal use, and should not be modified"**
+**Note that the state.json file is for the program's internal use, and should not be modified**
 
 ### Image Credits
 The default tree, star, lights, and baubles are all taken from an image by MTDEWBUNNY
