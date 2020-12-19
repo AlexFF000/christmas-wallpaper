@@ -40,3 +40,11 @@ The start and end date can be changed either through the settings GUI form, or b
 If there are more days between the start and end date than there are images, then no more modifications will be made once all images have been used.  Likewise, if there are more images than days, then not all images will be used.
 
 **Note that the state.json file is for the program's internal use, and should not be modified"**
+
+### Image Credits
+The default tree, star, lights, and baubles are all taken from an image by MTDEWBUNNY
+Available at: https://openclipart.org/detail/173440/christmas-tree-with-lights
+
+The desktop wallpaper image used in the screenshots for this readme document is Duman Community Park by Ron Shawley.
+Licensed under Creative Commons 3.0.
+Availabe at: https://commons.wikimedia.org/wiki/File:Duman_Community_Park_-_panoramio_(6).jpg
