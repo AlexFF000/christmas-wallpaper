@@ -121,8 +121,6 @@ namespace ChristmasWallpaper
             wallpaper.SaveImage(ModifiedWallpaperPath);
             WindowsWallpaper.SetWallpaper(Path.GetFullPath(ModifiedWallpaperPath));
             State.DaysElapsed++;
-
-
         }
 
         static string RandomImage()

@@ -44,6 +44,7 @@ namespace ChristmasWallpaper
             SysTrayIcon.Click += new EventHandler(SysTrayIcon_Click);
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
+            Visible = false;
         }
 
         private void SysTrayIcon_Click(object sender, EventArgs e)
@@ -51,6 +52,7 @@ namespace ChristmasWallpaper
             // Show settings
             WindowState = FormWindowState.Normal;
             ShowInTaskbar = true;
+            Visible = true;
         }
 
         private void SaveChangesButton_Click(object sender, EventArgs e)
@@ -78,6 +80,7 @@ namespace ChristmasWallpaper
                 e.Cancel = true;
                 ShowInTaskbar = false;
                 WindowState = FormWindowState.Minimized;
+                Visible = false;
 
             }
         }
