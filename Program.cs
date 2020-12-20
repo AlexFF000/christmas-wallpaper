@@ -81,46 +81,55 @@ namespace ChristmasWallpaper
 
         static void UpdateWallpaper()
         {
-            if (!(State.ImagesUsed.Count < State.Images.Count))
+            try
             {
-                // If there are not enough images and all have been used, then do nothing
-                return;
-            }
-            // Choose a random image to overlay (or use base image for first day)
-            string image;
-            if (State.DaysElapsed == 0)
-            {
-                // The first day
-                image = State.BaseImage;
-                // Save location of current desktop image
-                State.OriginalWallpaperPath = WindowsWallpaper.GetWallpaperPath();
-                // Save overlay
-                string imagePath;
-                State.Images.TryGetValue(image, out imagePath);
-                ImageObject overlayImage = new ImageObject(imagePath);
-                overlayImage.SaveImage(OverlayPath);
-                State.ImagesUsed.Add(image);
-            }
-            else
-            {
-                image = RandomImage();
-                string imagePath;
-                State.Images.TryGetValue(image, out imagePath);
-                // Overlay image on top of existing overlay
-                ImageObject overlayImage = new ImageObject(OverlayPath);
-                ImageObject newImage = new ImageObject(imagePath);
-                overlayImage.OverlayEqualImage(newImage);
-                overlayImage.SaveImage(OverlayPath);
-                State.ImagesUsed.Add(image);
-            }
+                if (!(State.ImagesUsed.Count < State.Images.Count))
+                {
+                    // If there are not enough images and all have been used, then do nothing
+                    return;
+                }
+                // Choose a random image to overlay (or use base image for first day)
+                string image;
+                if (State.DaysElapsed == 0)
+                {
+                    // The first day
+                    image = State.BaseImage;
+                    // Save location of current desktop image
+                    State.OriginalWallpaperPath = WindowsWallpaper.GetWallpaperPath();
+                    // Save overlay
+                    string imagePath;
+                    State.Images.TryGetValue(image, out imagePath);
+                    ImageObject overlayImage = new ImageObject(imagePath);
+                    overlayImage.SaveImage(OverlayPath);
+                    State.ImagesUsed.Add(image);
+                }
+                else
+                {
+                    image = RandomImage();
+                    string imagePath;
+                    State.Images.TryGetValue(image, out imagePath);
+                    // Overlay image on top of existing overlay
+                    ImageObject overlayImage = new ImageObject(OverlayPath);
+                    ImageObject newImage = new ImageObject(imagePath);
+                    overlayImage.OverlayEqualImage(newImage);
+                    overlayImage.SaveImage(OverlayPath);
+                    State.ImagesUsed.Add(image);
+                }
 
-            // Overlay on desktop
-            ImageObject wallpaper = WindowsWallpaper.GetWallpaper();
-            ImageObject overlay = new ImageObject(OverlayPath);
-            wallpaper.OverlaySmallerImage(overlay);
-            wallpaper.SaveImage(ModifiedWallpaperPath);
-            WindowsWallpaper.SetWallpaper(Path.GetFullPath(ModifiedWallpaperPath));
-            State.DaysElapsed++;
+                // Overlay on desktop
+                ImageObject wallpaper = WindowsWallpaper.GetWallpaper();
+                ImageObject overlay = new ImageObject(OverlayPath);
+                wallpaper.OverlaySmallerImage(overlay);
+                wallpaper.SaveImage(ModifiedWallpaperPath);
+                WindowsWallpaper.SetWallpaper(Path.GetFullPath(ModifiedWallpaperPath));
+                State.DaysElapsed++;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Unable to modify images, as program is unauthorised to access one of them", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Exit program with error code 5 (Access denied)
+                Environment.Exit(5);
+            }
         }
 
         static string RandomImage()
