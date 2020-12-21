@@ -94,5 +94,17 @@ namespace ChristmasWallpaper
                 return screenArea.Width - workingArea.Width;
             }
         }
+
+        public static string GetWallpaperStyle()
+        {
+            // Get number representing wallpaper style (fill, stretch, etc...)
+            return Registry.GetValue(wallpaperKeyPath, "WallpaperStyle", "0").ToString();
+        }
+
+        public static string GetTileWallpaperValue()
+        {
+            // Get number representing whether the wallpaper is tiled or not
+            return Registry.GetValue(wallpaperKeyPath, "TileWallpaper", 0).ToString();
+        }
     }
 }
