@@ -21,6 +21,8 @@ The settings panel can be used to change the start and end date as desired:
 
 ![The settings window, allowing user to change start and end dates and stop the program from running at startup](https://github.com/AlexFF000/christmas-wallpaper/blob/screenshots/Screenshots/settings.PNG)
 
+The settings panel can be accessed by clicking the icon in the system tray.
+
 ### Compatibility
 The program is compatible with Microsoft Windows 10.  It has not been tested on previous versions of Windows.
 
