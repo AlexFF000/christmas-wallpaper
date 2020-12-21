@@ -29,7 +29,7 @@ namespace ChristmasWallpaper
             Registry.SetValue(wallpaperKeyPath, "WallPaper", newWallpaperPath);
 
             // Change wallpaper fit mode to "stretch" so that everything fits in frame
-            Registry.SetValue(wallpaperKeyPath, "WallpaperStyle", "2");
+            SetWallpaperStyle("2");
 
             // Update the wallpaper for the current session (otherwise the changes won't take effect until the user next signs in)
             SystemParametersInfo(
@@ -101,10 +101,20 @@ namespace ChristmasWallpaper
             return Registry.GetValue(wallpaperKeyPath, "WallpaperStyle", "0").ToString();
         }
 
+        public static void SetWallpaperStyle(string style)
+        {
+            Registry.SetValue(wallpaperKeyPath, "WallpaperStyle", style);
+        }
+
         public static string GetTileWallpaperValue()
         {
             // Get number representing whether the wallpaper is tiled or not
-            return Registry.GetValue(wallpaperKeyPath, "TileWallpaper", 0).ToString();
+            return Registry.GetValue(wallpaperKeyPath, "TileWallpaper", "0").ToString();
+        }
+
+        public static void SetTileWallpaperValue(string value)
+        {
+            Registry.SetValue(wallpaperKeyPath, "TileWallpaper", value);
         }
     }
 }

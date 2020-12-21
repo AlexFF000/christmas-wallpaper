@@ -75,6 +75,8 @@ namespace ChristmasWallpaper
         {
             // EndDate is over so reset
             WindowsWallpaper.SetWallpaper(State.OriginalWallpaperPath);
+            WindowsWallpaper.SetWallpaperStyle(State.OriginalWallpaperStyle);
+            WindowsWallpaper.SetTileWallpaperValue(State.OriginalWallpaperTileValue);
             State.ImagesUsed.Clear();
             State.DaysElapsed = 0;
         }
@@ -94,8 +96,10 @@ namespace ChristmasWallpaper
                 {
                     // The first day
                     image = State.BaseImage;
-                    // Save location of current desktop image
+                    // Save location and style settings for current desktop image
                     State.OriginalWallpaperPath = WindowsWallpaper.GetWallpaperPath();
+                    State.OriginalWallpaperStyle = WindowsWallpaper.GetWallpaperStyle();
+                    State.OriginalWallpaperTileValue = WindowsWallpaper.GetTileWallpaperValue();
                     // Save overlay
                     string imagePath;
                     State.Images.TryGetValue(image, out imagePath);

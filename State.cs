@@ -21,6 +21,8 @@ namespace ChristmasWallpaper
         public static Dictionary<string, string> Images;  // Names of images
         public static List<string> ImagesUsed;  // List of images that have already been used
         public static string OriginalWallpaperPath;  // The path of the original wallpaper, to revert back to after the last day
+        public static string OriginalWallpaperStyle;  // The number representing the wallpaper style (e.g. fill, stretch, etc...), before it was changed
+        public static string OriginalWallpaperTileValue;  // The number representing whether the wallpaper should tile, before it was changed
 
         public static void LoadConfig()
         {
@@ -67,6 +69,8 @@ namespace ChristmasWallpaper
                 DaysElapsed = stateData.DaysElapsed;
                 ImagesUsed = stateData.ImagesUsed;
                 OriginalWallpaperPath = stateData.OriginalWallpaperPath;
+                OriginalWallpaperStyle = stateData.OriginalWallpaperStyle;
+                OriginalWallpaperTileValue = stateData.OriginalWallpaperTile;
             }
 
         }
@@ -78,6 +82,8 @@ namespace ChristmasWallpaper
             stateData.DaysElapsed = DaysElapsed;
             stateData.ImagesUsed = ImagesUsed;
             stateData.OriginalWallpaperPath = OriginalWallpaperPath;
+            stateData.OriginalWallpaperStyle = OriginalWallpaperStyle;
+            stateData.OriginalWallpaperTile = OriginalWallpaperTileValue;
             string stateJson = JsonSerializer.Serialize<StateFields>(stateData);
             File.WriteAllText(StateFilePath, stateJson);
         }
@@ -95,5 +101,7 @@ namespace ChristmasWallpaper
         public int DaysElapsed { get; set; }
         public List<string> ImagesUsed { get; set; }
         public string OriginalWallpaperPath { get; set; }
+        public string OriginalWallpaperStyle { get; set; }
+        public string OriginalWallpaperTile { get; set; }
     }
 }
