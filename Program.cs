@@ -167,7 +167,16 @@ namespace ChristmasWallpaper
                 {
                     // Add to registry
                     string keyPath = Path.Combine("HKEY_CURRENT_USER", StartupKey);
-                    Registry.SetValue(keyPath, "ChristmasWallpaper", Application.ExecutablePath);
+                    // Create command to run program
+                    // Must first switch to directory that contains executable, otherwise relative paths won't work
+                    /* 
+                      cmd /c runs a string as a command 
+                      /s removes the first set of quotes (while still treating the string inside them as a single command) to allow for nested quotes
+                      cd /d changes the drive as well as directory (if necessary)
+                     */
+                    
+                    string command = String.Format("cmd /s /c \"cd /d \"{0}\" && start ChristmasWallpaper.exe\"", Path.GetDirectoryName(Application.ExecutablePath));
+                    Registry.SetValue(keyPath, "ChristmasWallpaper", command);
 
                 }
             }
